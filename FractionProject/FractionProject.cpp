@@ -38,8 +38,10 @@ class Circle
     const double PI = 3.14156;
     int x, y, radius;
 public:
-    
+    static int a;
 };
+
+int Circle::a = 10;
 
 class Fraction
 {
@@ -61,7 +63,7 @@ public:
         if (!denominator)
             this->denominator = denominator;
     }
-    void Show()
+    void Show() const
     {
         cout << "[" << numerator << "/" << denominator << "]";
     }
@@ -97,12 +99,68 @@ public:
         fresult.denominator = this->denominator * f.numerator;
         return fresult;
     }
+
+    friend Fraction operator+ (Fraction f1, Fraction f2);
+    friend Fraction operator+ (Fraction f, int n);
+    friend Fraction operator+ (int n, Fraction f);
+
+
+
+
+    /*{
+        Fraction fresult;
+        fresult.numerator = this->numerator * f.denominator + this->denominator * f.numerator;
+        fresult.denominator = this->denominator * f.denominator;
+        return fresult;
+    }
+
+    Fraction operator+ (int n)
+    {
+        Fraction fresult(1, this->denominator);
+        fresult.numerator = this->numerator + this->denominator * n;
+        return fresult;
+    }*/
+
 };
+
+Fraction operator+ (Fraction f1, Fraction f2)
+{
+    Fraction fresult;
+    fresult.numerator = f1.numerator * f2.denominator + f1.denominator * f2.numerator;
+    fresult.denominator = f1.denominator * f2.denominator;
+    return fresult;
+}
+
+Fraction operator+ (Fraction f, int n)
+{
+    Fraction fresult(1, f.denominator);
+    fresult.numerator = f.numerator + f.denominator * n;
+    return fresult;
+}
+
+Fraction operator+ (int n, Fraction f)
+{
+    return f + n;
+}
+
+
+class Counter
+{
+public:
+    int count;
+
+    friend Counter operator+(Counter c1, Counter c2);
+};
+Counter operator+(Counter c1, Counter c2)
+{
+    Counter c;
+    c.count = c1.count * c2.count;
+    return c;
+}
 
 int main()
 {
     MyClass obj1;
-    //MyClass obj2;
 
     obj1.num = 100;
     obj1.id = 1234;
@@ -119,16 +177,26 @@ int main()
 
     MyClass::Show();
 
-   /* Fraction f1(3, 5);
+    // -----------------------------
+
+
+    Fraction f1(3, 5);
     Fraction f2(2, 7);
-    f1.Add(f2);*/
 
-    //Fraction f3(4, 7);
-    //f1.Show(); cout << "\n";
-    
-    //f1.Add(f2).Mult(f3).Del(f1).Show();
-    
-    //f1.Show(); cout << "\n";
+    Fraction f3 = 5 + f1;
+    f3.Show();
 
-    Math::Sin(12);
+    int x = 6;
+    float y = 4.5;
+
+    /*f1.Add(f2);
+
+    Fraction f3(4, 7);
+    f1.Show(); cout << "\n";
+    
+    f1.Add(f2).Mult(f3).Del(f1).Show();
+    
+    f1.Show(); cout << "\n";
+
+    Math::Sin(12);*/
 }
